@@ -1,0 +1,383 @@
+body {
+    margin: 0;
+    font-family: 'Armstrong', sans-serif;
+    color: #ffffff;
+    background: linear-gradient(to bottom, #323230 0%, #c8c8c7 100%);
+    min-height: 100vh;
+}
+
+
+.main-body {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* --------------------------header-------------------------- */
+.header-page {
+    box-sizing: border-box;
+    display: flex;
+    padding: 22px 64px 0 64px;
+    gap: 10px;
+    height: 140px;
+    border-bottom: 1px solid #EDEEF0;
+}
+
+.header-icon {
+    width: 50%;
+}
+
+.header-icon-img {
+    height: 100%;
+}
+
+/* --------------------------end header-------------------------- */
+/* --------------------------page-title-------------------------- */
+.page-title {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 64px;
+    font-size: 36px;
+    font-weight: 600;
+
+}
+
+/* --------------------------end page-title-------------------------- */
+
+/* --------------------------main-------------------------- */
+.main {
+    display: flex;
+    flex-direction: column;
+    padding: 0 160px 40px 160px;
+    gap: 36px;
+    box-sizing: border-box;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 24px 16px;
+    gap: 16px;
+    border-radius: 20px;
+    box-shadow: 0 6px 30px 0 rgba(62, 65, 71, 0.55);
+}
+
+#calendar {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#month-year {
+    color: #FEE000;
+    text-align: center;
+}
+
+.header button {
+    padding: 10px;
+    min-width: 72px;
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.header button:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.days, #dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.day, .date {
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.day {
+    background: #FEE000;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.date {
+    cursor: pointer;
+    background: #ffffff;
+    color: #000000;
+    font-weight: bold;
+}
+
+.date:hover {
+    background-color: #e2e6ea;
+}
+
+.slots {
+    display: none;
+    margin-top: 10px;
+}
+
+.slots .slot {
+    padding: 5px;
+    margin-bottom: 10px;
+    background-color: #000000;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.slots .slot:hover {
+    background-color: #FEE000;
+}
+
+/*--------------------- Modal form ---------------------*/
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.75);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    margin: 0 auto;
+    width: max-content;
+    position: relative;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* ----------------- form ----------------- */
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 620px;
+    background-color: #323230;
+    border-radius: 20px;
+    box-sizing: border-box;
+    height: auto;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(254, 224, 0, 0.5), 0 6px 20px rgba(254, 224, 0, 0.3);
+}
+
+.title {
+    color: #FEE000;
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 36px;
+    font-weight: 600;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.subtitle {
+    color: #FEE000;
+    font-family: sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.input-container:nth-child(2),
+.input-container:nth-child(3),
+.input-container:nth-child(4),
+.input-container:nth-child(5) {
+    width: 45%;
+}
+
+.input-container {
+    height: 50px;
+    position: relative;
+    width: 100%;
+}
+
+.ic2 {
+    margin-top: 30px;
+}
+
+.input {
+    background-color: #c8c8c7;
+    border-radius: 12px;
+    border: 2px solid #323230;
+    box-sizing: border-box;
+    color: #000;
+    font-size: 18px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 100%;
+}
+
+.cut {
+    background-color: #323230;
+    border-radius: 10px;
+    height: 20px;
+    left: 20px;
+    position: absolute;
+    top: -20px;
+    transform: translateY(0);
+    transition: transform 200ms;
+    width: 100px;
+}
+
+.cut-short {
+    width: 50px;
+}
+
+.input:focus ~ .cut,
+.input:not(:placeholder-shown) ~ .cut {
+    transform: translateY(8px);
+}
+
+.placeholder {
+    color: #65657b;
+    font-family: sans-serif;
+    left: 20px;
+    line-height: 14px;
+    pointer-events: none;
+    position: absolute;
+    transform-origin: 0 50%;
+    transition: transform 200ms, color 200ms;
+    top: 20px;
+}
+
+.input:focus ~ .placeholder,
+.input:not(:placeholder-shown) ~ .placeholder {
+    transform: translateY(-30px) translateX(10px) scale(0.75);
+}
+
+.input:not(:placeholder-shown) ~ .placeholder {
+    color: #808097;
+}
+
+.input:focus ~ .placeholder {
+    color: #FEE000;
+}
+
+.submit-div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.submit {
+    background-color: #FEE000;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #000;
+    cursor: pointer;
+    font-size: 18px;
+    height: 50px;
+    margin-top: 38px;
+    text-align: center;
+    width: 40%;
+}
+
+.submit:active {
+    background-color: #d4b200;
+}
+
+/* ----------------- end form ----------------- */
+/*--------------------- end Modal form ---------------------*/
+
+/* ----------------- Mobile Styles ----------------- */
+@media (max-width: 768px) {
+    .header-page {
+        flex-direction: column;
+        padding: 22px 32px 0 32px;
+        height: auto;
+    }
+
+    .page-title {
+        padding: 0 32px;
+        font-size: 24px;
+    }
+
+    .main {
+        padding: 0 10px 20px 10px;
+    }
+
+    .main-content {
+        padding: 12px 8px;
+    }
+
+    #calendar{
+        padding: 10px;
+    }
+    #month-year {
+        height: 56px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+    }
+
+    .modal-content{
+        display: flex;
+        justify-content: center;
+    }
+
+    .form {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .title {
+        font-size: 24px;
+        margin-top: 20px;
+    }
+
+    .input-container:nth-child(2),
+    .input-container:nth-child(3),
+    .input-container:nth-child(4),
+    .input-container:nth-child(5) {
+        width: 100%;
+    }
+
+    .submit {
+        width: 80%;
+    }
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script> <!-- JQuery -->
+
+    <script src="js/main.js"></script> <!-- work code -->
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+</head>
+<body>
+
+<div class="main-body">
+    <div class="header-page">
+        <div class="header-icon"><img src="images/009_Group_LOGO_gor_new.svg" alt="service icon" class="header-icon-img"></div>
+        <div class="header-consultation"></div>
+    </div>
+
+    <div class="page-title">Welcome<br>Please select an appointment date and time</div>
+
+    <div class="main">
+        <div class="main-content">
+            <div id="calendar">
+                <div class="header">
+                    <button id="prev">Previous</button>
+                    <h2 id="month-year"></h2>
+                    <button id="next">Next</button>
+                </div>
+                <div class="days">
+                    <div class="day">Mon</div>
+                    <div class="day">Tue</div>
+                    <div class="day">Wed</div>
+                    <div class="day">Thu</div>
+                    <div class="day">Fri</div>
+                    <div class="day">Sat</div>
+                    <div class="day">Sun</div>
+                </div>
+                <div id="dates"></div>
+            </div>
+        </div>
+
+        <!-- Modal Form -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <div class="form appointment-form" id="appointment-form">
+                    <div class="title">Record form</div>
+                    <!--                    <div class="subtitle">Let's create a record!</div>-->
+                    <div class="input-container ic2">
+                        <input id="firstname" class="input" type="text" placeholder=" "/>
+                        <div class="cut"></div>
+                        <label for="firstname" class="placeholder">First name</label>
+                    </div>
+                    <div class="input-container ic2">
+                        <input id="lastname" class="input" type="text" placeholder=" "/>
+                        <div class="cut"></div>
+                        <label for="lastname" class="placeholder">Last name</label>
+                    </div>
+                    <div class="input-container ic2">
+                        <input id="timeSlot" class="input" type="text" name="timeSlot" placeholder=" " readonly>
+                        <div class="cut"></div>
+                        <label for="timeSlot" class="placeholder">Time Slot</label>
+                    </div>
+
+                    <div class="input-container ic2">
+                        <input id="phone" class="input" type="text" name="phone" placeholder="">
+                        <div class="cut"></div>
+                        <label for="phone" class="placeholder">Phone Number</label>
+                    </div>
+
+                    <div class="input-container ic2">
+                        <input id="car" class="input" type="text" name="car" placeholder=" ">
+                        <div class="cut"></div>
+                        <label for="car" class="placeholder">Car info</label>
+                    </div>
+
+                    <div class="input-container ic2">
+                        <input id="Comments" class="input" type="text" name="Comments" placeholder=" ">
+                        <div class="cut"></div>
+                        <label for="Comments" class="placeholder">Comments</label>
+                    </div>
+
+                    <div class="submit-div">
+                        <button id="submitForm" type="text" class="submit">submit</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+<script>
+    $(document).ready(function () {
+        $('#submitForm').on('click', function (e) {
+            e.preventDefault();
+            const timeSlot = $('#timeSlot').val();
+            const appointmentDate = $('.date.selected').text();
+            const monthYearText = $('#month-year').text();
+
+            // Update the page title with the success message
+            $('.page-title').html(`Appointment successfully booked for ${appointmentDate} ${monthYearText} at ${timeSlot} <img src="images/successful_icon.svg" alt="successful">`);
+
+            $('#modal').fadeOut();
+            $('.main-content').fadeOut();
+        });
+
+        initializeCalendar({
+            calendarSelector: '#calendar',
+            monthYearSelector: '#month-year',
+            datesSelector: '#dates',
+            prevButtonSelector: '#prev',
+            nextButtonSelector: '#next',
+            slots: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00']
+        });
+
+        // Close modal when clicking outside of the form
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('.modal-content').length && !$(e.target).is('#calendar, #calendar *')) {
+                $('#modal').fadeOut();
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>
