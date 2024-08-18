@@ -19,7 +19,8 @@
 
 <div class="main-body">
     <div class="header-page">
-        <div class="header-icon"><img src="images/009_Group_LOGO_gor_new.svg" alt="service icon" class="header-icon-img"></div>
+        <div class="header-icon"><img src="images/009_Group_LOGO_gor_new.svg" alt="service icon"
+                                      class="header-icon-img"></div>
         <div class="header-consultation"></div>
     </div>
 
@@ -74,16 +75,64 @@
                     </div>
 
                     <div class="input-container ic2">
-                        <input id="car" class="input" type="text" name="car" placeholder=" ">
-                        <div class="cut"></div>
-                        <label for="car" class="placeholder">Car info</label>
-                    </div>
-
-                    <div class="input-container ic2">
                         <input id="Comments" class="input" type="text" name="Comments" placeholder=" ">
                         <div class="cut"></div>
                         <label for="Comments" class="placeholder">Comments</label>
                     </div>
+
+                    <div class="toggle-button" id="toggleCarInfo">
+                        <div class="toggle-button-header">Car Parameters</div>
+                        <div class="toggle-button-icon"><img src="./images/Arrow_Bottom.svg" alt="Arrow_Bottom"></div>
+                    </div>
+
+                    <div class="subform hidden" id="car-subform">
+                        <div class="input-container ic2">
+                            <input id="car-make" class="input" type="text" name="carMake" placeholder=" ">
+                            <div class="cut"></div>
+                            <label for="car-make" class="placeholder">License plate number</label>
+                        </div>
+                        <div class="input-container ic2">
+                            <select id="carBrand" class="input" name="carBrand">
+                                <option value="" disabled selected hidden></option>
+                                <option value="toyota">Toyota</option>
+                                <option value="ford">Ford</option>
+                                <option value="chevrolet">Chevrolet</option>
+                                <option value="bmw">BMW</option>
+                                <option value="audi">Audi</option>
+                            </select>
+                            <div class="cut"></div>
+                            <label for="carBrand" class="placeholder">Car brand</label>
+                        </div>
+                        <div class="input-container ic2">
+                            <select id="carModel" class="input" name="carModel">
+                                <option value="" disabled selected hidden></option>
+                                <option value="rav4">RAV4</option>
+                                <option value="f150">F-150</option>
+                                <option value="sierra">Sierra</option>
+                                <option value="impala">Impala</option>
+                                <option value="x5">X5</option>
+                            </select>
+                            <div class="cut"></div>
+                            <label for="carModel" class="placeholder">Car model</label>
+                        </div>
+                        <div class="input-container ic2">
+                            <input id="mileage" class="input" type="text" name="mileage" placeholder=" ">
+                            <div class="cut"></div>
+                            <label for="mileage" class="placeholder">Mileage</label>
+                        </div>
+                        <div class="input-container ic2">
+                            <select id="unitOfMeasurement" class="input" name="unitOfMeasurement">
+                                <option value="" disabled selected hidden></option>
+                                <option value="km">Kilometers (km)</option>
+                                <option value="miles">Miles (mi)</option>
+                                <option value="liters">Liters (L)</option>
+                                <option value="gallons">Gallons (gal)</option>
+                            </select>
+                            <div class="cut"></div>
+                            <label for="unitOfMeasurement" class="placeholder">Unit of measurement</label>
+                        </div>
+                    </div>
+
 
                     <div class="submit-div">
                         <button id="submitForm" class="submit">submit</button>
@@ -132,6 +181,13 @@
                 $('#modal').fadeOut();
             }
         });
+
+
+        $('#toggleCarInfo').on('click', function () {
+            $('#car-subform').slideToggle().css('display', 'flex');
+            $('.toggle-button-icon > img').toggleClass('rotate-icon');
+        });
+
     });
 
 </script>
