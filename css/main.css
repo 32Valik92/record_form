@@ -345,9 +345,10 @@ body {
         padding: 12px 8px;
     }
 
-    #calendar{
+    #calendar {
         padding: 10px;
     }
+
     #month-year {
         height: 56px;
         box-sizing: border-box;
@@ -355,7 +356,15 @@ body {
         align-items: center;
     }
 
-    .modal-content{
+    .day {
+        padding: 5px;
+    }
+
+    #dates {
+        width: 100%;
+    }
+
+    .modal-content {
         display: flex;
         justify-content: center;
     }
