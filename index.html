@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>009 GROUP</title>
 
+    <!-- select 2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
     <link rel="stylesheet" href="css/main.css">
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script> <!-- JQuery -->
-
-    <script src="js/main.js"></script> <!-- work code -->
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 
@@ -92,28 +93,18 @@
                             <label for="car-make" class="placeholder">License plate number</label>
                         </div>
                         <div class="input-container ic2">
-                            <select id="carBrand" class="input" name="carBrand">
+                            <select id="brand" class="select2 brand input" name="brand">
                                 <option value="" disabled selected hidden></option>
-                                <option value="toyota">Toyota</option>
-                                <option value="ford">Ford</option>
-                                <option value="chevrolet">Chevrolet</option>
-                                <option value="bmw">BMW</option>
-                                <option value="audi">Audi</option>
                             </select>
                             <div class="cut"></div>
-                            <label for="carBrand" class="placeholder">Car brand</label>
+                            <label for="brand" class="placeholder">Car brand</label>
                         </div>
                         <div class="input-container ic2">
-                            <select id="carModel" class="input" name="carModel">
+                            <select id="model" class="select2 model input" name="model">
                                 <option value="" disabled selected hidden></option>
-                                <option value="rav4">RAV4</option>
-                                <option value="f150">F-150</option>
-                                <option value="sierra">Sierra</option>
-                                <option value="impala">Impala</option>
-                                <option value="x5">X5</option>
                             </select>
                             <div class="cut"></div>
-                            <label for="carModel" class="placeholder">Car model</label>
+                            <label for="model" class="placeholder">Car model</label>
                         </div>
                         <div class="input-container ic2">
                             <input id="mileage" class="input" type="text" name="mileage" placeholder=" ">
@@ -147,12 +138,53 @@
 </div>
 
 <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+<script src="js/error-handling/errors.js"></script> <!-- error handling -->
+
+<script src="js/configs/configs.js"></script> <!-- Get All values and URLs  -->
+
+<script src="js/make-request.js"></script> <!-- function for build Request -->
+
+<script src="js/request-template.js"></script> <!-- Request function -->
+
+<script src="js/main.js"></script> <!-- work code -->
 <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(async function () {
+        initializeCalendar({
+            calendarSelector: '#calendar',
+            monthYearSelector: '#month-year',
+            datesSelector: '#dates',
+            prevButtonSelector: '#prev',
+            nextButtonSelector: '#next',
+            slots: ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00']
+        });
+
+        await getBrands({"_type": "brand"});
+
+
+
+        // Close modal when clicking outside of the form
+        $(document).on('click', function (e) {
+            // Перевірка, чи натиснуто на модальне вікно або його елементи
+            if (!$(e.target).closest('.modal-content').length &&
+                !$(e.target).is('#calendar, #calendar *') &&
+                !$(e.target).closest('.select2-container').length) {
+                $('#modal').fadeOut();
+            }
+        });
+
+
+        $('#brand, #model, #unitOfMeasurement').select2({
+            placeholder: "Select an option",
+        });
+
+
+        // submit(record) event
         $('#submitForm').on('click', function (e) {
             e.preventDefault();
             const timeSlot = $('#timeSlot').val();
@@ -166,26 +198,26 @@
             $('.main-content').fadeOut();
         });
 
-        initializeCalendar({
-            calendarSelector: '#calendar',
-            monthYearSelector: '#month-year',
-            datesSelector: '#dates',
-            prevButtonSelector: '#prev',
-            nextButtonSelector: '#next',
-            slots: ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00']
-        });
 
-        // Close modal when clicking outside of the form
-        $(document).on('click', function (e) {
-            if (!$(e.target).closest('.modal-content').length && !$(e.target).is('#calendar, #calendar *')) {
-                $('#modal').fadeOut();
-            }
-        });
-
-
+        // toggle car parameters
         $('#toggleCarInfo').on('click', function () {
             $('#car-subform').slideToggle().css('display', 'flex');
             $('.toggle-button-icon > img').toggleClass('rotate-icon');
+        });
+
+        // Event for choosing brand
+        $('#brand').on('change', async function () {
+            const id = $(this).attr('id');
+
+            const selectObject = {
+                "_type": "model",
+                "brand_name_inscription": $(this).val()
+            };
+
+            // Calling the function to retrieve models, passing the selected brand
+            if (id === 'brand') {
+                await getFirstModels(selectObject);
+            }
         });
 
     });
