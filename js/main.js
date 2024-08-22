@@ -1,23 +1,22 @@
-// main function for build calendar with a free time slots
+// main function for building a calendar with free time slots
 function initializeCalendar(config) {
     const $calendar = $(config.calendarSelector);
     const $monthYear = $(config.monthYearSelector);
     const $dates = $(config.datesSelector);
     const $prevButton = $(config.prevButtonSelector);
     const $nextButton = $(config.nextButtonSelector);
-    const slots = config.slots;
 
     let currentDate = new Date();
+    let activeDateElement = null; // Variable to keep track of the currently active date element
 
-    // function for render calendar
+    // Function to render the calendar
     function renderCalendar() {
         $dates.empty();
-        $monthYear.text(currentDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long' }));
+        $monthYear.text(currentDate.toLocaleDateString('en-US', {year: 'numeric', month: 'long'}));
 
         const firstDayIndex = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
         const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
 
-        const daysInWeek = 7;
         let day = 1;
 
         for (let i = 0; i < firstDayIndex; i++) {
@@ -28,29 +27,71 @@ function initializeCalendar(config) {
         for (let i = 0; i < lastDay; i++) {
             const $dateElement = $('<div>').addClass('date').text(day).attr('data-date', day);
             day++;
-            $dateElement.on('click', function () {
-                showSlots($dateElement);
+            $dateElement.on('click', async function () {
+                // Hide slots from the previously selected date if any
+                if (activeDateElement && activeDateElement[0] !== $dateElement[0]) {
+                    activeDateElement.find('.slots').slideUp('slow', function () {
+                        $(this).remove();
+                    });
+                }
+
+                if (!$dateElement.find('.slots').length) {
+                    await showSlots($dateElement);
+                } else {
+                    $dateElement.find('.slots').slideUp('slow', function () {
+                        $(this).remove();
+                    });
+                }
+
+                // Update the active date element
+                activeDateElement = $dateElement;
             });
             $dates.append($dateElement);
         }
     }
 
-    // function for show free slots
-    function showSlots($dateElement) {
-        if ($dateElement.find('.slots').length) {
-            $dateElement.find('.slots').slideUp('slow', function() {
-                $(this).remove();
-            });
-        } else {
-            $('.slots').slideUp('slow', function() {
-                $(this).remove();
-            });
+    // Function to request free slots and build them
+    async function showSlots($dateElement) {
+        const selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), $dateElement.data('date'));
+
+        // Формуємо об'єкт з датами в UNIX-форматі (в секундах, 10 знаків)
+        const searchTimeFrom = Math.floor(selectedDate.getTime() / 1000); // Початок дня в секундах
+        const searchTimeTo = Math.floor(new Date(selectedDate.setHours(23, 59, 59, 999)).getTime() / 1000); // Кінець дня в секундах
+
+        const searchObject = {
+            service_station_id: requestConst.service_station_id,
+            search_time_from: searchTimeFrom,
+            search_time_to: searchTimeTo
+        };
+
+        try {
+            // Виклик функції для отримання слотів
+            const slots = await getFreeSlots(searchObject);
+
+            if (!Array.isArray(slots) || slots.length === 0) {
+                // Якщо слотів немає, показуємо модальне вікно
+                createNoSlotsModal();
+                $('#modalOverlay').fadeIn();
+                $('#modalNoSlots').fadeIn();
+
+                setTimeout(() => {
+                    $('#modalOverlay').fadeOut();
+                    $('#modalNoSlots').fadeOut();
+                }, 1000);
+
+                return; // Виходимо, якщо слотів немає
+            }
 
             const $slotContainer = $('<div>').addClass('slots');
+
             slots.forEach(slot => {
-                const $slotElement = $('<div>').addClass('slot').text(slot);
+                const slotText = `${new Date(slot.time_from * 1000).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })} - ${new Date(slot.time_to * 1000).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}`;
+                const $slotElement = $('<div>').addClass('slot').text(slotText);
                 $slotElement.on('click', function () {
-                    $('#timeSlot').val(slot);
+                    $('#timeSlot').val(slotText);
                     $('#modal').fadeIn().css('display', 'flex');
                 });
                 $slotContainer.append($slotElement);
@@ -58,6 +99,9 @@ function initializeCalendar(config) {
 
             $dateElement.append($slotContainer);
             $slotContainer.slideDown('slow');
+
+        } catch (error) {
+            console.error('Error fetching free slots:', error);
         }
     }
 
@@ -71,56 +115,27 @@ function initializeCalendar(config) {
         renderCalendar();
     });
 
+    createNoSlotsModal(); // Move this to avoid initial display
     renderCalendar();
 }
 
-// Function for getting Brands array
-async function getBrands(selectObj = {"_type": "brand"}) {
-    const brandsRequest = getBrandsRequest(selectObj);
+function createNoSlotsModal() {
+    if (!$('#modalNoSlots').length) {
+        // Create the overlay for the full-screen modal
+        const $overlay = $('<div>')
+            .attr('id', 'modalOverlay');
 
-    try {
-        const {result: brandsResult} = await ajaxRequest(brandsRequest);
+        // Create the modal box
+        const $modalNoSlots = $('<div>No available slots</div>')
+            .attr('id', 'modalNoSlots');
+        // Append modal and overlay to body
+        $('body').append($overlay);
+        $('body').append($modalNoSlots);
 
-        if (Array.isArray(brandsResult) && brandsResult.length > 0) {
-            $('#brand').empty();
-            $('#brand').append('<option value="" disabled selected hidden></option>');
-
-            const newOptions = brandsResult.map(brand => {
-                return $("<option></option>")
-                    .attr("value", brand.brand_name_inscription)
-                    .text(brand.brand_name_inscription);
-            });
-
-            $('#brand').append(newOptions);
-        }
-    } catch (error) {
-        console.error(error);
-        errResponse(error);
+        // Optional: Hide modal on overlay click
+        $overlay.on('click', function () {
+            $overlay.fadeOut();
+            $modalNoSlots.fadeOut();
+        });
     }
 }
-
-// Function for getting Models array
-async function getFirstModels(selectObj = {"_type": "model"}) {
-    const modelsRequest = getModelsRequest(selectObj);
-
-    try {
-        const {result: modelsResult} = await ajaxRequest(modelsRequest);
-
-        if (Array.isArray(modelsResult) && modelsResult.length > 0) {
-            $('#model').empty();
-            $('#model').append('<option value="" disabled selected hidden></option>');
-
-            const newOptions = modelsResult.map(model => {
-                return $("<option></option>")
-                    .attr("value", model.model_name_inscription)
-                    .text(model.model_name_inscription);
-            });
-
-            $('#model').append(newOptions);
-        }
-    } catch (error) {
-        console.error(error);
-        errResponse(error);
-    }
-}
-

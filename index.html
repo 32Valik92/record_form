@@ -147,6 +147,8 @@
 
 <script src="js/make-request.js"></script> <!-- function for build Request -->
 
+<script src="js/request-function.js"></script> <!-- function for send Request -->
+
 <script src="js/request-template.js"></script> <!-- Request function -->
 
 <script src="js/main.js"></script> <!-- work code -->
@@ -161,7 +163,6 @@
             datesSelector: '#dates',
             prevButtonSelector: '#prev',
             nextButtonSelector: '#next',
-            slots: ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00']
         });
 
         await getBrands({"_type": "brand"});
@@ -216,7 +217,7 @@
 
             // Calling the function to retrieve models, passing the selected brand
             if (id === 'brand') {
-                await getFirstModels(selectObject);
+                await getModels(selectObject);
             }
         });
 

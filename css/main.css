@@ -459,6 +459,37 @@ select {
 
 /*--------------------- end Modal form ---------------------*/
 
+/* ---------------- modalNoSlots ---------------- */
+#modalOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 9998;
+}
+
+#modalNoSlots {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    color: #000000;
+    padding: 20px 30px;
+    box-shadow: 0 4px 8px rgba(254, 224, 0, 0.5), 0 6px 20px rgba(254, 224, 0, 0.3);
+    border-radius: 8px;
+    z-index: 9999;
+    text-align: center;
+    font-family: 'Armstrong', sans-serif;
+}
+
+/* ---------------- end modalNoSlots ---------------- */
+
+
 /* ----------------- Mobile Styles ----------------- */
 @media (max-width: 768px) {
     .header-page {

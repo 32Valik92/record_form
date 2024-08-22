@@ -35,3 +35,20 @@ function getModelsRequest(selectObject) {
 
     return request;
 }
+
+// Function for getting free slots Request Data
+function getFreeSlotsRequest(data) {
+    const request = {
+        url: URLS.getAvailableCheckInSlots,
+        type: "POST",
+        data: {
+            method: "get_available_check_in_slots",
+            data: {...data},
+            metadata: {
+                token: token
+            }
+        }
+    };
+
+    return request;
+}

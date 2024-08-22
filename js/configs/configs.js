@@ -1,5 +1,10 @@
 const URLS = {
-    getCarParameters: 'https://alb.qa.f1xiq.com:4243',
+    getCarParameters: '',
+    getAvailableCheckInSlots: '',
 };
 
-const token = 'qswDhf^12d(';
+const token = '';
+
+const requestConst = {
+    service_station_id: ""
+}
