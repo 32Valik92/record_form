@@ -195,16 +195,6 @@
 
             await getOrderTemplateData(requestConst.sto_id);
 
-            const timeSlot = $('#timeSlot').val();
-            const appointmentDate = $('.date.selected').text();
-            const monthYearText = $('#month-year').text();
-
-            // Update the page title with the success message
-            $('.page-title').html(`Appointment successfully booked for ${appointmentDate} ${monthYearText} at ${timeSlot} <img src="images/successful_icon.svg" alt="successful" class="successful-icon">`);
-
-            $('#modal').fadeOut();
-            $('.main-content').fadeOut();
-
             const selectedBrand = $("#brand").find(":selected");
             const brandData = selectedBrand.data("brand");
 
@@ -255,6 +245,19 @@
 
             const createResponse = await createOrder(createOrderObject);
             console.log(createResponse);
+
+            if (createResponse.Status === 'Ok') {
+                const timeSlot = $('#timeSlot').val();
+                const appointmentDate = $('.date.selected').text();
+                const monthYearText = $('#month-year').text();
+
+                // Update the page title with the success message
+                $('.page-title').html(`Appointment successfully booked for ${appointmentDate} ${monthYearText} at ${timeSlot} <img src="images/successful_icon.svg" alt="successful" class="successful-icon">`);
+
+                $('#modal').fadeOut();
+                $('.main-content').fadeOut();
+            }
+
         });
 
 
