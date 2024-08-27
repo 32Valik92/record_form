@@ -36,7 +36,9 @@ function initializeCalendar(config) {
                 }
 
                 if (!$dateElement.find('.slots').length) {
-                    await showSlots($dateElement);
+                    const roundedOffset = parseFloat((timeZoneObjectData.offset / 3600).toFixed(2));
+
+                    await showSlots($dateElement, roundedOffset);
                 } else {
                     $dateElement.find('.slots').slideUp('slow', function () {
                         $(this).remove();
@@ -51,7 +53,7 @@ function initializeCalendar(config) {
     }
 
     // Function to request free slots and build them
-    async function showSlots($dateElement) {
+    async function showSlots($dateElement, roundedOffset) {
         const selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), $dateElement.data('date'));
 
         // Формуємо об'єкт з датами в UNIX-форматі (в секундах, 10 знаків)
@@ -59,7 +61,7 @@ function initializeCalendar(config) {
         const searchTimeTo = Math.floor(new Date(selectedDate.setHours(23, 59, 59, 999)).getTime() / 1000); // Кінець дня в секундах
 
         const searchObject = {
-            service_station_id: requestConst.service_station_id,
+            service_station_id: requestConst.sto_id,
             search_time_from: searchTimeFrom,
             search_time_to: searchTimeTo
         };
@@ -85,13 +87,27 @@ function initializeCalendar(config) {
             const $slotContainer = $('<div>').addClass('slots');
 
             slots.forEach(slot => {
-                const slotText = `${new Date(slot.time_from * 1000).toLocaleTimeString([], {
+                const timeFromDate = new Date(slot.time_from * 1000);
+
+                // Форматування часу у вигляді "година:хвилина"
+                const slotText = `${timeFromDate.toLocaleTimeString([], {
                     hour: '2-digit',
                     minute: '2-digit'
                 })} - ${new Date(slot.time_to * 1000).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}`;
+
+                // Форматування часу у вигляді ISO з зміщенням roundedOffset
+                const general___start_dateISO = new Date(timeFromDate.getTime() + roundedOffset * 60 * 60 * 1000).toISOString();
+
                 const $slotElement = $('<div>').addClass('slot').text(slotText);
                 $slotElement.on('click', function () {
-                    $('#timeSlot').val(slotText);
+                    $('#timeSlot')
+                        .val(slotText)
+                        .data('general___start_time', timeFromDate.toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }))
+                        .data('general___start_date', general___start_dateISO);
+
                     $('#modal').fadeIn().css('display', 'flex');
                 });
                 $slotContainer.append($slotElement);
@@ -137,5 +153,18 @@ function createNoSlotsModal() {
             $overlay.fadeOut();
             $modalNoSlots.fadeOut();
         });
+    }
+}
+
+// for checking required inputs in form
+function validateInputs() {
+    const firstname = $('#firstname').val().trim();
+    const phone = $('#phone').val().trim();
+
+    // Перевірка, чи обидва поля заповнені
+    if (firstname !== '' && phone !== '') {
+        $('#submitForm').prop('disabled', false); // Розблокувати кнопку
+    } else {
+        $('#submitForm').prop('disabled', true);  // Заблокувати кнопку
     }
 }

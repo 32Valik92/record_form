@@ -52,7 +52,10 @@ body {
     padding: 0 64px;
     font-size: 36px;
     font-weight: 600;
+}
 
+.header-icon-img, .successful-icon {
+    cursor: pointer;
 }
 
 /* --------------------------end page-title-------------------------- */
@@ -414,6 +417,12 @@ select {
 
 .submit:active {
     background-color: #d4b200;
+}
+
+#submitForm:disabled {
+    background-color: #e0e0e0;
+    color: #a0a0a0;
+    cursor: not-allowed;
 }
 
 /* ----------------- end form ----------------- */

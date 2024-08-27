@@ -36,13 +36,13 @@
                     <button id="next">Next</button>
                 </div>
                 <div class="days">
+                    <div class="day">Sun</div>
                     <div class="day">Mon</div>
                     <div class="day">Tue</div>
                     <div class="day">Wed</div>
                     <div class="day">Thu</div>
                     <div class="day">Fri</div>
                     <div class="day">Sat</div>
-                    <div class="day">Sun</div>
                 </div>
                 <div id="dates"></div>
             </div>
@@ -126,7 +126,7 @@
 
 
                     <div class="submit-div">
-                        <button id="submitForm" class="submit">Submit</button>
+                        <button id="submitForm" class="submit" disabled>Submit</button>
                     </div>
                 </div>
 
@@ -157,6 +157,11 @@
 
 <script>
     $(document).ready(async function () {
+
+        const TimeZoneId = await getTimeZoneId(requestConst.sto_id);
+        const timeZoneData = await getTimeZoneData(TimeZoneId);
+        timeZoneObjectData = {...timeZoneData}
+
         initializeCalendar({
             calendarSelector: '#calendar',
             monthYearSelector: '#month-year',
@@ -166,7 +171,6 @@
         });
 
         await getBrands({"_type": "brand"});
-
 
 
         // Close modal when clicking outside of the form
@@ -186,17 +190,71 @@
 
 
         // submit(record) event
-        $('#submitForm').on('click', function (e) {
+        $('#submitForm').on('click', async function (e) {
             e.preventDefault();
+
+            await getOrderTemplateData(requestConst.sto_id);
+
             const timeSlot = $('#timeSlot').val();
             const appointmentDate = $('.date.selected').text();
             const monthYearText = $('#month-year').text();
 
             // Update the page title with the success message
-            $('.page-title').html(`Appointment successfully booked for ${appointmentDate} ${monthYearText} at ${timeSlot} <img src="images/successful_icon.svg" alt="successful">`);
+            $('.page-title').html(`Appointment successfully booked for ${appointmentDate} ${monthYearText} at ${timeSlot} <img src="images/successful_icon.svg" alt="successful" class="successful-icon">`);
 
             $('#modal').fadeOut();
             $('.main-content').fadeOut();
+
+            const selectedBrand = $("#brand").find(":selected");
+            const brandData = selectedBrand.data("brand");
+
+            const selectedOption = $("#model").find(":selected");
+            const modelData = selectedOption.data("model");
+
+            createOrderObject.data.client_comment___content = $('#Comments').val();
+
+            createOrderObject.data.client___users = JSON.stringify([{
+                "phone": $('#phone').val(),
+                "name": `${$('#firstname').val()} ${$('#lastname').val()}`,
+                "email": "",
+                "type": "default",
+                "priceTypeName": "",
+                "internal_id": ""
+            }]);
+
+            createOrderObject.data.client___cars = JSON.stringify([{
+                "brand": brandData?.internal_id || '',
+                "brandName": brandData?.brand_name || '',
+                "internal_id": "",
+                "isOwner": false,
+                "model": modelData?.internal_id || '',
+                "modelName": modelData?.model_name || '',
+                "stateNumber": $('#car-make').val() || '',
+                "vin": "",
+                "year": ""
+            }]);
+
+            const timeNow = new Date().toISOString();
+            createOrderObject.data.settings___statuses_times = JSON.stringify({
+                "register_at": timeNow,
+                "check_in_at": "",
+                "canceled_at": "",
+                "created_at": timeNow
+            })
+
+            createOrderObject.data.client___name = `${$('#firstname').val()} ${$('#lastname').val()}`;
+            createOrderObject.data.car___state_number = $('#car-make').val() || '';
+            createOrderObject.data.car___brand = brandData?.internal_id || '';
+            createOrderObject.data.car___brand_name = brandData?.brand_name || '';
+            createOrderObject.data.car___model = modelData?.internal_id || '';
+            createOrderObject.data.car___model_name = modelData?.model_name || '';
+
+            createOrderObject.data.settings___register_at = timeNow;
+            createOrderObject.data.general___start_date = $('#timeSlot').data('general___start_date');
+            createOrderObject.data.general___start_time = $('#timeSlot').data('general___start_time');
+
+            const createResponse = await createOrder(createOrderObject);
+            console.log(createResponse);
         });
 
 
@@ -219,6 +277,24 @@
             if (id === 'brand') {
                 await getModels(selectObject);
             }
+        });
+
+
+        // check required inputs in form
+        $('#firstname, #phone').on('input', validateInputs);
+
+
+        // we can write only numbers
+        $('#mileage').on('input', function () {
+            const currentValue = $(this).val();
+            const filteredValue = currentValue.replace(/[^0-9]/g, '');
+            $(this).val(filteredValue);
+        });
+
+
+        // rerender page on click company icon and successful icon
+        $('.header-icon-img, .successful-icon').on('click', function () {
+            location.reload();
         });
 
     });
