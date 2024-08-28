@@ -244,9 +244,8 @@
             createOrderObject.data.general___start_time = $('#timeSlot').data('general___start_time');
 
             const createResponse = await createOrder(createOrderObject);
-            console.log(createResponse);
 
-            if (createResponse.Status === 'Ok') {
+            if (createResponse.status === 'OK') {
                 const timeSlot = $('#timeSlot').val();
                 const appointmentDate = $('.date.selected').text();
                 const monthYearText = $('#month-year').text();
