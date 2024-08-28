@@ -12,9 +12,7 @@ const requestConst = {
     order_type: "",
 }
 
-
-
-const tokenSystem = 'qswDhf^12d(';
+const tokenSystem = '';
 
 let timeZoneObjectData = {};
 

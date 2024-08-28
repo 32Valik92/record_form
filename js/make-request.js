@@ -74,7 +74,7 @@ function getBrandsRequest(selectObject) {
                 select: {...selectObject}
             },
             metadata: {
-                token: tokenSystem
+                token: null
             }
         }
     };
@@ -93,7 +93,7 @@ function getModelsRequest(selectObject) {
                 select: {...selectObject}
             },
             metadata: {
-                token: tokenSystem
+                token: null
             }
         }
     };
