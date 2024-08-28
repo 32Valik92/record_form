@@ -158,11 +158,15 @@
 <script>
     $(document).ready(async function () {
 
+        // get TimeZoneId for get offset from sto_id timeZone
         const TimeZoneId = await getTimeZoneId(requestConst.sto_id);
+        // get data about sto_id timeZone
         const timeZoneData = await getTimeZoneData(TimeZoneId);
+        // put timeZoneData to our value
         timeZoneObjectData = {...timeZoneData}
 
-        initializeCalendar({
+        // initializeCalendar
+        await initializeCalendar({
             calendarSelector: '#calendar',
             monthYearSelector: '#month-year',
             datesSelector: '#dates',
@@ -170,12 +174,14 @@
             nextButtonSelector: '#next',
         });
 
+
+        // get brands for car part
         await getBrands({"_type": "brand"});
 
 
         // Close modal when clicking outside of the form
         $(document).on('click', function (e) {
-            // Перевірка, чи натиснуто на модальне вікно або його елементи
+            // Checking if the modal window or its elements have been clicked
             if (!$(e.target).closest('.modal-content').length &&
                 !$(e.target).is('#calendar, #calendar *') &&
                 !$(e.target).closest('.select2-container').length) {
@@ -184,6 +190,7 @@
         });
 
 
+        // init our select like select2
         $('#brand, #model, #unitOfMeasurement').select2({
             placeholder: "Select an option",
         });
@@ -193,13 +200,14 @@
         $('#submitForm').on('click', async function (e) {
             e.preventDefault();
 
+            // get actual order_settings_template_id before record
             await getOrderTemplateData(requestConst.sto_id);
 
             const selectedBrand = $("#brand").find(":selected");
             const brandData = selectedBrand.data("brand");
 
-            const selectedOption = $("#model").find(":selected");
-            const modelData = selectedOption.data("model");
+            const selectedModel = $("#model").find(":selected");
+            const modelData = selectedModel.data("model");
 
             createOrderObject.data.client_comment___content = $('#Comments').val();
 

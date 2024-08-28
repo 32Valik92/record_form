@@ -126,7 +126,6 @@ async function getFreeSlots(dataObj) {
 // Function for create request
 async function createOrder(dataObj) {
     const orderObject = getCreateOrderRequest(dataObj);
-    console.log(orderObject)
     try {
         const result = await ajaxRequest(orderObject);
 

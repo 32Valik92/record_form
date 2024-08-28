@@ -1,5 +1,5 @@
 // main function for building a calendar with free time slots
-function initializeCalendar(config) {
+async function initializeCalendar(config) {
     const $calendar = $(config.calendarSelector);
     const $monthYear = $(config.monthYearSelector);
     const $dates = $(config.datesSelector);
@@ -57,7 +57,7 @@ function initializeCalendar(config) {
         const selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), $dateElement.data('date'));
 
         // Формуємо об'єкт з датами в UNIX-форматі (в секундах, 10 знаків)
-        const searchTimeFrom = Math.floor(selectedDate.getTime() / 1000); // Початок дня в секундах
+        const searchTimeFrom = Math.floor(selectedDate.getTime() / 1000);
         const searchTimeTo = Math.floor(new Date(selectedDate.setHours(23, 59, 59, 999)).getTime() / 1000); // Кінець дня в секундах
 
         const searchObject = {
@@ -135,6 +135,7 @@ function initializeCalendar(config) {
     renderCalendar();
 }
 
+// function for build no slots modal window
 function createNoSlotsModal() {
     if (!$('#modalNoSlots').length) {
         // Create the overlay for the full-screen modal
@@ -163,8 +164,8 @@ function validateInputs() {
 
     // Перевірка, чи обидва поля заповнені
     if (firstname !== '' && phone !== '') {
-        $('#submitForm').prop('disabled', false); // Розблокувати кнопку
+        $('#submitForm').prop('disabled', false);
     } else {
-        $('#submitForm').prop('disabled', true);  // Заблокувати кнопку
+        $('#submitForm').prop('disabled', true);
     }
 }
