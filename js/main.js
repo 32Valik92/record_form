@@ -36,9 +36,8 @@ async function initializeCalendar(config) {
                 }
 
                 if (!$dateElement.find('.slots').length) {
-                    const roundedOffset = parseFloat((timeZoneObjectData.offset / 3600).toFixed(2));
 
-                    await showSlots($dateElement, roundedOffset);
+                    await showSlots($dateElement, timeZoneObjectData.offset);
                 } else {
                     $dateElement.find('.slots').slideUp('slow', function () {
                         $(this).remove();
@@ -95,18 +94,31 @@ async function initializeCalendar(config) {
                     minute: '2-digit'
                 })} - ${new Date(slot.time_to * 1000).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}`;
 
+                // дата и время которое выбрал пользователь, без тайм зоны по GMT +0:00
+                const settings___check_in_atISO = new Date(timeFromDate.getTime()).toISOString();
+
+                // дата и время которое выбрал пользователь, без тайм зоны по GMT +0:00
+                const general___check_in_dateISO = new Date(timeFromDate.getTime()).toISOString();
+
                 // Форматування часу у вигляді ISO з зміщенням roundedOffset
-                const general___start_dateISO = new Date(timeFromDate.getTime() + roundedOffset * 60 * 60 * 1000).toISOString();
+                const adjustedTimeISO = new Date(timeFromDate.getTime() + roundedOffset * 1000);
+                // Форматуємо годину та хвилину у формат "HH:MM"
+                const hoursISO = String(adjustedTimeISO.getUTCHours()).padStart(2, '0');
+                const minutesISO = String(adjustedTimeISO.getUTCMinutes()).padStart(2, '0');
+                // Призначаємо значення у форматі "година:хвилина"
+                const general___check_in_timeISO = `${hoursISO}:${minutesISO}`;
 
                 const $slotElement = $('<div>').addClass('slot').text(slotText);
                 $slotElement.on('click', function () {
                     $('#timeSlot')
                         .val(slotText)
-                        .data('general___start_time', timeFromDate.toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        }))
-                        .data('general___start_date', general___start_dateISO);
+                        // .data('general___start_time', timeFromDate.toLocaleTimeString([], {
+                        //     hour: '2-digit',
+                        //     minute: '2-digit'
+                        // }))
+                        .data('settings___check_in_at', settings___check_in_atISO)
+                        .data('general___check_in_date', general___check_in_dateISO)
+                        .data('general___check_in_time', general___check_in_timeISO);
 
                     $('#modal').fadeIn().css('display', 'flex');
                 });

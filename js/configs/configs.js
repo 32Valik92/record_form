@@ -9,8 +9,10 @@ const URLS = {
 const requestConst = {
     sto_id: "",
     userToken: "",
-    order_type: "b2c_order",
+    order_type: "",
 }
+
+
 
 const tokenSystem = 'qswDhf^12d(';
 
@@ -62,14 +64,14 @@ let createOrderObject = {
         "client___changed_agreement": false,
         "client___viber_agreement": true,
         "client___cars": "",
-        "client___name": "CTO 1943",
+        "client___name": "",
         "car___is_enabled": true,
-        "car___state_number": "BB1234CC",
-        "car___brand": "2e1a899e-070a-46f8-a331-a1208c506303",
-        "car___brand_name": "ACTM",
-        "car___model": "2e1a899e-070a-46f8-a331-a1208c506303",
-        "car___model_name": "Тралы низкорамные",
-        "car___year": 2006,
+        "car___state_number": "",
+        "car___brand": "",
+        "car___brand_name": "",
+        "car___model": "",
+        "car___model_name": "",
+        "car___year": 0,
         "car___vin": "",
         "car___mileage": 0,
         "car___unit": "undefined",

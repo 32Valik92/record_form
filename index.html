@@ -116,11 +116,15 @@
                                 <option value="" disabled selected hidden></option>
                                 <option value="km">Kilometers (km)</option>
                                 <option value="miles">Miles (mi)</option>
-                                <option value="liters">Liters (L)</option>
-                                <option value="gallons">Gallons (gal)</option>
+                                <option value="moto-hours">Moto hours</option>
                             </select>
                             <div class="cut"></div>
                             <label for="unitOfMeasurement" class="placeholder">Unit of measurement</label>
+                        </div>
+                        <div class="input-container ic2">
+                            <input id="car___year" class="input" type="text" name="car___year" placeholder=" ">
+                            <div class="cut"></div>
+                            <label for="car___year" class="placeholder">Car year</label>
                         </div>
                     </div>
 
@@ -220,24 +224,68 @@
                 "internal_id": ""
             }]);
 
-            createOrderObject.data.client___cars = JSON.stringify([{
-                "brand": brandData?.internal_id || '',
-                "brandName": brandData?.brand_name || '',
-                "internal_id": "",
-                "isOwner": false,
-                "model": modelData?.internal_id || '',
-                "modelName": modelData?.model_name || '',
-                "stateNumber": $('#car-make').val() || '',
-                "vin": "",
-                "year": ""
-            }]);
+            if (!brandData && !modelData && !($('#car-make').val()) && !($('#car___year').val())) {
 
-            const timeNow = new Date().toISOString();
+                createOrderObject.data.car___brand = "undefined";
+                createOrderObject.data.car___brand_name = "undefined";
+                createOrderObject.data.car___engine_capacity = "undefined";
+                createOrderObject.data.car___engine_number = "";
+                createOrderObject.data.car___fuel_type = "undefined";
+                createOrderObject.data.car___generation = "";
+                createOrderObject.data.car___internal_id = "undefined";
+                createOrderObject.data.car___is_enabled = true;
+                createOrderObject.data.car___mileage = null;
+                createOrderObject.data.car___model = "undefined";
+                createOrderObject.data.car___model_name = "undefined";
+                createOrderObject.data.car___modification = "";
+                createOrderObject.data.car___notes = "undefined";
+                createOrderObject.data.car___series = "";
+                createOrderObject.data.car___specialization = "undefined";
+                createOrderObject.data.car___state_number = "undefined";
+                createOrderObject.data.car___unit = "undefined";
+                createOrderObject.data.car___vin = "undefined";
+                createOrderObject.data.car___year = null;
+                delete createOrderObject.data.client___cars;
+            } else {
+                createOrderObject.data.client___cars = JSON.stringify([{
+                    "brand": brandData?.internal_id || '',
+                    "brandName": brandData?.brand_name || '',
+                    "internal_id": null,
+                    "isOwner": false,
+                    "model": modelData?.internal_id || '',
+                    "modelName": modelData?.model_name || '',
+                    "stateNumber": $('#car-make').val() || '',
+                    "vin": "",
+                    "year": $('#car___year').val()
+                }]);
+
+                createOrderObject.data.car___brand = brandData?.internal_id || '';
+                createOrderObject.data.car___brand_name = brandData?.brand_name || '';
+                createOrderObject.data.car___engine_capacity = "undefined"; //
+                createOrderObject.data.car___engine_number = ""; //
+                createOrderObject.data.car___fuel_type = "undefined"; //
+                createOrderObject.data.car___generation = ""; //
+                createOrderObject.data.car___internal_id = null; //
+                createOrderObject.data.car___is_enabled = true; //
+                createOrderObject.data.car___mileage = $('#mileage').val() || null; // string
+                createOrderObject.data.car___model = modelData?.internal_id || '';
+                createOrderObject.data.car___model_name = modelData?.model_name || '';
+                createOrderObject.data.car___modification = ""; //
+                createOrderObject.data.car___notes = "undefined"; //
+                createOrderObject.data.car___series = ""; //
+                createOrderObject.data.car___specialization = modelData?.vehicle_type || 'undefined'; // from model vehicle_type
+                createOrderObject.data.car___state_number = $('#car-make').val() || "undefined"; // car number
+                createOrderObject.data.car___unit = $('#unitOfMeasurement').val() || "undefined"; // from #unitOfMeasurement
+                createOrderObject.data.car___vin = "undefined"; //
+                createOrderObject.data.car___year = +($('#car___year').val()) || null; // number
+            }
+
+            const timeNow = new Date();
             createOrderObject.data.settings___statuses_times = JSON.stringify({
-                "register_at": timeNow,
+                "register_at": timeNow.toISOString(),
                 "check_in_at": "",
                 "canceled_at": "",
-                "created_at": timeNow
+                "created_at": timeNow.toISOString()
             })
 
             createOrderObject.data.client___name = `${$('#firstname').val()} ${$('#lastname').val()}`;
@@ -247,9 +295,21 @@
             createOrderObject.data.car___model = modelData?.internal_id || '';
             createOrderObject.data.car___model_name = modelData?.model_name || '';
 
-            createOrderObject.data.settings___register_at = timeNow;
-            createOrderObject.data.general___start_date = $('#timeSlot').data('general___start_date');
-            createOrderObject.data.general___start_time = $('#timeSlot').data('general___start_time');
+            createOrderObject.data.settings___register_at = timeNow.toISOString();
+            createOrderObject.data.general___start_date = timeNow.toISOString();
+
+            // Отримуємо поточний час з урахуванням зміщення
+            const adjustedTime = new Date(timeNow.getTime() + timeZoneObjectData.offset * 1000);
+            // Форматуємо годину та хвилину в потрібний формат
+            const hours = String(adjustedTime.getUTCHours()).padStart(2, '0');
+            const minutes = String(adjustedTime.getUTCMinutes()).padStart(2, '0');
+            // Призначаємо значення у форматі "година:хвилина"
+            createOrderObject.data.general___start_time = `${hours}:${minutes}`;
+
+            createOrderObject.data.settings___check_in_at = $('#timeSlot').data('settings___check_in_at');
+            createOrderObject.data.general___check_in_date = $('#timeSlot').data('general___check_in_date');
+            createOrderObject.data.general___check_in_time = $('#timeSlot').data('general___check_in_time');
+
 
             const createResponse = await createOrder(createOrderObject);
 
@@ -292,6 +352,33 @@
 
         // check required inputs in form
         $('#firstname, #phone').on('input', validateInputs);
+
+
+        // check car___year
+        $('#car___year').on('input', function () {
+            const currentValue = $(this).val();
+            const currentYear = new Date().getFullYear(); // Поточний рік
+
+            if (currentValue.length >= 4) {
+                // Перевіряємо значення лише якщо введено 4 символи і більше
+                const filteredValue = currentValue.replace(/[^0-9]/g, ''); // Залишаємо тільки цифри
+
+                let numericValue = parseInt(filteredValue, 10); // Перетворюємо відфільтроване значення в число
+
+                if (numericValue < 1900) {
+                    numericValue = 1900; // Якщо менше 1900, встановлюємо 1900
+                } else if (numericValue > 2024) {
+                    numericValue = 2024; // Якщо більше 2024, встановлюємо 2024
+                } else if (numericValue > currentYear) {
+                    numericValue = currentYear; // Якщо більше поточного року, встановлюємо поточний рік
+                }
+
+                // Оновлюємо поле, якщо значення відрізняється від введеного
+                if (filteredValue !== numericValue.toString()) {
+                    $(this).val(numericValue);
+                }
+            }
+        });
 
 
         // we can write only numbers
