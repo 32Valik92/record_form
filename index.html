@@ -248,36 +248,36 @@
                 delete createOrderObject.data.client___cars;
             } else {
                 createOrderObject.data.client___cars = JSON.stringify([{
-                    "brand": brandData?.internal_id || '',
-                    "brandName": brandData?.brand_name || '',
+                    "brand": brandData?.internal_id || "undefined",
+                    "brandName": brandData?.brand_name || "undefined",
                     "internal_id": null,
                     "isOwner": false,
-                    "model": modelData?.internal_id || '',
-                    "modelName": modelData?.model_name || '',
-                    "stateNumber": $('#car-make').val() || '',
+                    "model": modelData?.internal_id || "undefined",
+                    "modelName": modelData?.model_name || "undefined",
+                    "stateNumber": $('#car-make').val() || "undefined",
                     "vin": "",
-                    "year": $('#car___year').val()
+                    "year": $('#car___year').val() || null
                 }]);
 
-                createOrderObject.data.car___brand = brandData?.internal_id || '';
-                createOrderObject.data.car___brand_name = brandData?.brand_name || '';
-                createOrderObject.data.car___engine_capacity = "undefined"; //
-                createOrderObject.data.car___engine_number = ""; //
-                createOrderObject.data.car___fuel_type = "undefined"; //
-                createOrderObject.data.car___generation = ""; //
-                createOrderObject.data.car___internal_id = null; //
-                createOrderObject.data.car___is_enabled = true; //
-                createOrderObject.data.car___mileage = $('#mileage').val() || null; // string
-                createOrderObject.data.car___model = modelData?.internal_id || '';
-                createOrderObject.data.car___model_name = modelData?.model_name || '';
-                createOrderObject.data.car___modification = ""; //
-                createOrderObject.data.car___notes = "undefined"; //
-                createOrderObject.data.car___series = ""; //
-                createOrderObject.data.car___specialization = modelData?.vehicle_type || 'undefined'; // from model vehicle_type
-                createOrderObject.data.car___state_number = $('#car-make').val() || "undefined"; // car number
-                createOrderObject.data.car___unit = $('#unitOfMeasurement').val() || "undefined"; // from #unitOfMeasurement
-                createOrderObject.data.car___vin = "undefined"; //
-                createOrderObject.data.car___year = +($('#car___year').val()) || null; // number
+                createOrderObject.data.car___brand = brandData?.internal_id || "undefined";
+                createOrderObject.data.car___brand_name = brandData?.brand_name || "undefined";
+                createOrderObject.data.car___engine_capacity = "undefined";
+                createOrderObject.data.car___engine_number = "";
+                createOrderObject.data.car___fuel_type = "undefined";
+                createOrderObject.data.car___generation = "";
+                createOrderObject.data.car___internal_id = null;
+                createOrderObject.data.car___is_enabled = true;
+                createOrderObject.data.car___mileage = $('#mileage').val() || null;
+                createOrderObject.data.car___model = modelData?.internal_id || "undefined";
+                createOrderObject.data.car___model_name = modelData?.model_name || "undefined";
+                createOrderObject.data.car___modification = "";
+                createOrderObject.data.car___notes = "undefined";
+                createOrderObject.data.car___series = "";
+                createOrderObject.data.car___specialization = modelData?.vehicle_type || 'undefined';
+                createOrderObject.data.car___state_number = $('#car-make').val() || "undefined";
+                createOrderObject.data.car___unit = $('#unitOfMeasurement').val() || "undefined";
+                createOrderObject.data.car___vin = "undefined";
+                createOrderObject.data.car___year = +($('#car___year').val()) || null;
             }
 
             const timeNow = new Date();
@@ -289,11 +289,6 @@
             })
 
             createOrderObject.data.client___name = `${$('#firstname').val()} ${$('#lastname').val()}`;
-            createOrderObject.data.car___state_number = $('#car-make').val() || '';
-            createOrderObject.data.car___brand = brandData?.internal_id || '';
-            createOrderObject.data.car___brand_name = brandData?.brand_name || '';
-            createOrderObject.data.car___model = modelData?.internal_id || '';
-            createOrderObject.data.car___model_name = modelData?.model_name || '';
 
             createOrderObject.data.settings___register_at = timeNow.toISOString();
             createOrderObject.data.general___start_date = timeNow.toISOString();
@@ -334,6 +329,7 @@
             $('.toggle-button-icon > img').toggleClass('rotate-icon');
         });
 
+
         // Event for choosing brand
         $('#brand').on('change', async function () {
             const id = $(this).attr('id');
@@ -366,11 +362,11 @@
                 let numericValue = parseInt(filteredValue, 10); // Перетворюємо відфільтроване значення в число
 
                 if (numericValue < 1900) {
-                    numericValue = 1900; // Якщо менше 1900, встановлюємо 1900
+                    numericValue = 1900;
                 } else if (numericValue > 2024) {
-                    numericValue = 2024; // Якщо більше 2024, встановлюємо 2024
+                    numericValue = 2024;
                 } else if (numericValue > currentYear) {
-                    numericValue = currentYear; // Якщо більше поточного року, встановлюємо поточний рік
+                    numericValue = currentYear;
                 }
 
                 // Оновлюємо поле, якщо значення відрізняється від введеного
