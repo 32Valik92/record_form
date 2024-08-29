@@ -110,7 +110,7 @@ function getFreeSlotsRequest(data) {
             method: "get_available_check_in_slots",
             data: {...data},
             metadata: {
-                token: tokenSystem
+                token: requestConst.userToken
             }
         }
     };
