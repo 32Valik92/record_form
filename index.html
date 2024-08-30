@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="input-container ic2">
-                        <input id="phone" class="input" type="text" name="phone" placeholder="">
+                        <input id="phone" class="input" type="text" name="phone" placeholder="" value="+421">
                         <div class="cut"></div>
                         <label for="phone" class="placeholder">Phone Number</label>
                     </div>
@@ -293,12 +293,12 @@
             createOrderObject.data.settings___register_at = timeNow.toISOString();
             createOrderObject.data.general___start_date = timeNow.toISOString();
 
-            // Отримуємо поточний час з урахуванням зміщення
+            // get time in your timeZone
             const adjustedTime = new Date(timeNow.getTime() + timeZoneObjectData.offset * 1000);
-            // Форматуємо годину та хвилину в потрібний формат
+            // get hours and minutes
             const hours = String(adjustedTime.getUTCHours()).padStart(2, '0');
             const minutes = String(adjustedTime.getUTCMinutes()).padStart(2, '0');
-            // Призначаємо значення у форматі "година:хвилина"
+            // "hours:minutes"
             createOrderObject.data.general___start_time = `${hours}:${minutes}`;
 
             createOrderObject.data.settings___check_in_at = $('#timeSlot').data('settings___check_in_at');
@@ -320,6 +320,15 @@
                 $('.main-content').fadeOut();
             }
 
+        });
+
+
+        // "+" and then only numbers
+        $('#phone').on('input', function () {
+            let value = $(this).val();
+
+            const filteredValue = '+' + value.replace(/[^0-9]/g, '');
+            $(this).val(filteredValue);
         });
 
 
