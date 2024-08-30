@@ -175,7 +175,7 @@ function validateInputs() {
     const phone = $('#phone').val().trim();
 
     // Перевірка, чи обидва поля заповнені
-    if (firstname !== '' && phone !== '') {
+    if (firstname !== '' && phone !== '+') {
         $('#submitForm').prop('disabled', false);
     } else {
         $('#submitForm').prop('disabled', true);
