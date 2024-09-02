@@ -173,11 +173,10 @@ function createNoSlotsModal() {
 function validateInputs() {
     const firstname = $('#firstname').val().trim();
     const phone = $('#phone').val().trim();
+    const brand = $('#brand').val();
+    const model = $('#model').val();
 
-    // Перевірка, чи обидва поля заповнені
-    if (firstname !== '' && phone !== '+') {
-        $('#submitForm').prop('disabled', false);
-    } else {
-        $('#submitForm').prop('disabled', true);
-    }
+    const allFieldsFilled = firstname !== '' && phone !== '+' && brand && model;
+
+    $('#submitForm').prop('disabled', !allFieldsFilled);
 }

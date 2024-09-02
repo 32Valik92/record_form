@@ -204,7 +204,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    width: 620px;
+    width: 670px;
     max-height: 600px;
     overflow-y: auto;
     background-color: #323230;
@@ -241,9 +241,26 @@ body {
 .input-container:nth-child(2),
 .input-container:nth-child(3),
 .input-container:nth-child(4),
-.input-container:nth-child(5) {
+.input-container:nth-child(5),
+.input-container:nth-child(6),
+.input-container:nth-child(7) {
     width: 45%;
 }
+
+
+.subform .input-container:nth-child(1),
+.subform .input-container:nth-child(2) {
+    width: 33%;
+}
+
+.subform .input-container:nth-child(3) {
+    width: 20%;
+}
+
+.subform .input-container:nth-child(4) {
+    width: 100%;
+}
+
 
 .input-container {
     height: 50px;
@@ -344,6 +361,11 @@ body {
     width: 150px;
 }
 
+#car___year + .cut {
+    width: 80px;
+}
+
+
 .cut-short {
     width: 50px;
 }
@@ -433,7 +455,7 @@ select {
 }
 
 .subform {
-    width: 90%;
+    width: 95%;
     margin: 0 auto;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -570,7 +592,16 @@ select {
     .input-container:nth-child(2),
     .input-container:nth-child(3),
     .input-container:nth-child(4),
-    .input-container:nth-child(5) {
+    .input-container:nth-child(5),
+    .input-container:nth-child(6),
+    .input-container:nth-child(7) {
+        width: 100%;
+    }
+
+    .subform .input-container:nth-child(1),
+    .subform .input-container:nth-child(2),
+    .subform .input-container:nth-child(3),
+    .subform .input-container:nth-child(4) {
         width: 100%;
     }
 
