@@ -364,7 +364,7 @@
 
 
         // rerender page on click company icon and successful icon
-        $('.header-icon-img, .successful-icon').on('click', function () {
+        $(document).on('click', '.header-icon-img, .successful-icon', function () {
             location.reload();
         });
 

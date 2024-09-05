@@ -56,24 +56,37 @@ async function getOrderTemplateData(sto_id) {
 }
 
 // Function for getting Brands array
-async function getBrands(selectObj = {"_type": "brand"}) {
+async function getBrands(selectObj = { "_type": "brand" }) {
     const brandsRequest = getBrandsRequest(selectObj);
 
     try {
-        const {result: brandsResult} = await ajaxRequest(brandsRequest);
+        const { result: brandsResult } = await ajaxRequest(brandsRequest);
 
         if (Array.isArray(brandsResult) && brandsResult.length > 0) {
+            // Сортуємо масив так, щоб елементи з російськими або українськими символами були в кінці
+            const sortedBrands = brandsResult.sort((a, b) => {
+                const regex = /[а-яА-ЯЁёІіЇїЄєҐґ]/; // Кирилиця (українські та російські літери)
+                const aIsCyrillic = regex.test(a.brand_name_inscription);
+                const bIsCyrillic = regex.test(b.brand_name_inscription);
+
+                // Якщо a кириличний, а b ні - a повинен бути після b
+                if (aIsCyrillic && !bIsCyrillic) return 1;
+                // Якщо b кириличний, а a ні - b повинен бути після a
+                if (!aIsCyrillic && bIsCyrillic) return -1;
+                // Якщо обидва або обидва не кириличні, сортуємо за алфавітом
+                return a.brand_name_inscription.localeCompare(b.brand_name_inscription);
+            });
+
             $('#brand').empty();
             $('#brand').append('<option value="" disabled selected hidden></option>');
 
-
-            const newOptions = brandsResult.map(brand => {
+            console.log(sortedBrands);
+            const newOptions = sortedBrands.map(brand => {
                 return $("<option></option>")
                     .attr("value", brand.brand_name_inscription)
                     .attr("data-brand", JSON.stringify(brand))
                     .text(brand.brand_name_inscription);
             });
-
 
             $('#brand').append(newOptions);
         }
@@ -82,6 +95,7 @@ async function getBrands(selectObj = {"_type": "brand"}) {
         errResponse(error);
     }
 }
+
 
 // Function for getting Models array
 async function getModels(selectObj = {"_type": "model"}) {
