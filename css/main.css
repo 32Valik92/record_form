@@ -234,7 +234,7 @@ body {
     text-align: center;
     font-size: 36px;
     font-weight: 600;
-    margin-top: 30px;
+    margin-top: 15px;
     width: 100%;
 }
 
@@ -329,7 +329,7 @@ body {
     color: #000; /* Колір тексту для опцій */
     background-color: #ffffff; /* Фон для опцій */
     font-family: 'Armstrong', sans-serif; /* Шрифт для опцій */
-    font-size: 18px; /* Розмір шрифту для опцій */
+    font-size: 15px; /* Розмір шрифту для опцій */
 }
 
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
@@ -339,7 +339,7 @@ body {
 
 /* Виправлення для висоти і відступів */
 .select2-container--default .select2-results > .select2-results__options {
-    max-height: 150px; /* Максимальна висота для випадаючого меню */
+    max-height: 250px; /* Максимальна висота для випадаючого меню */
     overflow-y: auto; /* Додає прокрутку при переповненні */
 }
 
