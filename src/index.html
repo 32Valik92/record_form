@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>009 GROUP</title>
+
+    <!-- select 2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="../css/main.css">
+
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script> <!-- JQuery -->
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+</head>
+<body>
+
+<div class="main-body">
+    <div class="header-page">
+        <div class="header-icon">
+            <img src="../images/009_Group_LOGO_gor_new.png" alt="service icon" class="header-icon-img">
+        </div>
+        <div class="language-div">
+            <img src="../images/lng.svg" alt="language"
+                 class="language-icon">
+            <div class="input-container">
+                <select id="language" class="input lng-select" name="language">
+                    <option value="uk">Українська</option>
+                    <option value="ru">Русский</option>
+                    <option value="sk">Slovenčina</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-title">~!welcome!~<br>~!please_select_an_appointment_date_and_time!~</div>
+
+    <div class="main">
+        <div class="main-content">
+            <div id="calendar">
+                <div class="header">
+                    <button id="prev">~!previous!~</button>
+                    <h2 id="month-year"></h2>
+                    <button id="next">~!next!~</button>
+                </div>
+                <div class="days">
+                    <div class="day">~!sun!~</div>
+                    <div class="day">~!mon!~</div>
+                    <div class="day">~!tue!~</div>
+                    <div class="day">~!wed!~</div>
+                    <div class="day">~!thu!~</div>
+                    <div class="day">~!fri!~</div>
+                    <div class="day">~!sat!~</div>
+                </div>
+                <div id="dates"></div>
+            </div>
+        </div>
+
+        <!-- Modal Form -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <div class="form appointment-form" id="appointment-form">
+                    <div class="title">~!record_form!~</div>
+                    <div class="input-container ic2">
+                        <input id="firstname" class="input" type="text" placeholder=" "/>
+                        <div class="cut"></div>
+                        <label for="firstname" class="placeholder">~!name!~ *</label>
+                    </div>
+                    <div class="input-container ic2">
+                        <input id="phone" class="input" type="text" name="phone" placeholder="" value="+421">
+                        <div class="cut"></div>
+                        <label for="phone" class="placeholder">~!phone_number!~ *</label>
+                    </div>
+                    <div class="input-container ic2">
+                        <input id="timeSlot" class="input" type="text" name="timeSlot" placeholder=" " readonly>
+                        <div class="cut"></div>
+                        <label for="timeSlot" class="placeholder">~!time_slot!~</label>
+                    </div>
+                    <div class="input-container ic2">
+                        <input id="car-make" class="input" type="text" name="carMake" placeholder=" ">
+                        <div class="cut"></div>
+                        <label for="car-make" class="placeholder">~!license_plate_number!~</label>
+                    </div>
+                    <div class="input-container ic2">
+                        <select id="brand" class="select2 brand input" name="brand">
+                            <option value="" disabled selected hidden></option>
+                        </select>
+                        <div class="cut"></div>
+                        <label for="brand" class="placeholder">~!car_brand!~ *</label>
+                    </div>
+                    <div class="input-container ic2">
+                        <select id="model" class="select2 model input" name="model">
+                            <option value="" disabled selected hidden></option>
+                        </select>
+                        <div class="cut"></div>
+                        <label for="model" class="placeholder">~!car_model!~ *</label>
+                    </div>
+
+                    <div class="toggle-button" id="toggleCarInfo">
+                        <div class="toggle-button-header">~!Show_Additional_Parameters!~</div>
+                        <div class="toggle-button-icon"><img src="../images/Arrow_Bottom.svg" alt="Arrow_Bottom"></div>
+                    </div>
+
+                    <div class="subform hidden" id="car-subform">
+
+                        <div class="input-container ic2">
+                            <input id="mileage" class="input" type="text" name="mileage" placeholder=" ">
+                            <div class="cut"></div>
+                            <label for="mileage" class="placeholder">~!Mileage!~</label>
+                        </div>
+                        <div class="input-container ic2">
+                            <select id="unitOfMeasurement" class="input" name="unitOfMeasurement">
+                                <option value="" disabled selected hidden></option>
+                                <option value="km">~!Kilometers!~</option>
+                                <option value="miles">~!Miles!~</option>
+                                <option value="moto-hours">~!Moto_hours!~</option>
+                            </select>
+                            <div class="cut"></div>
+                            <label for="unitOfMeasurement" class="placeholder">~!Unit!~</label>
+                        </div>
+                        <div class="input-container ic2">
+                            <input id="car___year" class="input" type="text" name="car___year" placeholder=" ">
+                            <div class="cut"></div>
+                            <label for="car___year" class="placeholder">~!Year!~</label>
+                        </div>
+                        <div class="input-container ic2">
+                            <input id="Comments" class="input" type="text" name="Comments" placeholder=" ">
+                            <div class="cut"></div>
+                            <label for="Comments" class="placeholder">~!Comments!~</label>
+                        </div>
+                    </div>
+
+                    <div class="submit-div">
+                        <button id="submitForm" class="submit" disabled>~!Submit!~</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+<script src="../js/error-handling/errors.js"></script> <!-- error handling -->
+
+<script src="../js/configs/configs.js"></script> <!-- Get All values and URLs  -->
+
+<script src="../js/make-request.js"></script> <!-- function for build Request -->
+
+<script src="../js/request-function.js"></script> <!-- function for send Request -->
+
+<script src="../js/request-template.js"></script> <!-- Request function -->
+
+<script src="main.js"></script> <!-- work code -->
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+<script>
+    $(document).ready(async function () {
+
+        // select our language at first render
+        const url = window.location.href;
+        const lastSlashIndex = url.lastIndexOf('/');
+        const languageCode = url.substring(lastSlashIndex - 2, lastSlashIndex);
+        $('#language').val(languageCode);
+
+        // event on change language and jump to new page lng
+        $('#language').change(function () {
+            const oldValue = window.location.href.split('/').slice(-2, -1)[0]; // prev value in URL
+            const newValue = $(this).val();
+            const url = window.location.href;
+            const newUrl = url.replace(`/${oldValue}/`, `/${newValue}/`);
+
+            // Перенаправлення на нову URL
+            window.location.href = newUrl;
+        });
+
+        // get TimeZoneId for get offset from sto_id timeZone
+        const TimeZoneId = await getTimeZoneId(requestConst.sto_id);
+        // get data about sto_id timeZone
+        const timeZoneData = await getTimeZoneData(TimeZoneId);
+        // put timeZoneData to our value
+        timeZoneObjectData = {...timeZoneData}
+
+        // initializeCalendar
+        await initializeCalendar({
+            lng: $('#language').val(),
+            monthYearSelector: '#month-year',
+            datesSelector: '#dates',
+            prevButtonSelector: '#prev',
+            nextButtonSelector: '#next',
+        });
+
+
+        // get brands for car part
+        await getBrands({"_type": "brand"});
+
+
+        // Close modal when clicking outside of the form
+        $(document).on('click', function (e) {
+            // Checking if the modal window or its elements have been clicked
+            if (!$(e.target).closest('.modal-content').length &&
+                !$(e.target).is('#calendar, #calendar *') &&
+                !$(e.target).closest('.select2-container').length) {
+                $('#modal').fadeOut();
+            }
+        });
+
+
+        // init our select like select2
+        $('#brand, #model, #unitOfMeasurement').select2({
+            placeholder: "~!Select!~",
+        });
+
+
+        // submit(record) event
+        $('#submitForm').on('click', async function (e) {
+            e.preventDefault();
+
+            // get actual order_settings_template_id before record
+            await getOrderTemplateData(requestConst.sto_id);
+
+            const selectedBrand = $("#brand").find(":selected");
+            const brandData = selectedBrand.data("brand");
+
+            const selectedModel = $("#model").find(":selected");
+            const modelData = selectedModel.data("model");
+
+            createOrderObject.data.client_comment___content = $('#Comments').val();
+
+            createOrderObject.data.client___users = JSON.stringify([{
+                "phone": $('#phone').val(),
+                "name": $('#firstname').val(),
+                "email": "",
+                "type": "default",
+                "priceTypeName": "",
+                "internal_id": ""
+            }]);
+
+            createOrderObject.data.client___cars = JSON.stringify([{
+                "brand": brandData?.internal_id || "undefined",
+                "brandName": brandData?.brand_name || "undefined",
+                "internal_id": null,
+                "isOwner": false,
+                "model": modelData?.internal_id || "undefined",
+                "modelName": modelData?.model_name || "undefined",
+                "stateNumber": $('#car-make').val() || "undefined",
+                "vin": "",
+                "year": $('#car___year').val() || null
+            }]);
+
+            createOrderObject.data.car___brand = brandData?.internal_id || "undefined";
+            createOrderObject.data.car___brand_name = brandData?.brand_name || "undefined";
+            createOrderObject.data.car___engine_capacity = "undefined";
+            createOrderObject.data.car___engine_number = "";
+            createOrderObject.data.car___fuel_type = "undefined";
+            createOrderObject.data.car___generation = "";
+            createOrderObject.data.car___internal_id = null;
+            createOrderObject.data.car___is_enabled = true;
+            createOrderObject.data.car___mileage = $('#mileage').val() || null;
+            createOrderObject.data.car___model = modelData?.internal_id || "undefined";
+            createOrderObject.data.car___model_name = modelData?.model_name || "undefined";
+            createOrderObject.data.car___modification = "";
+            createOrderObject.data.car___notes = "undefined";
+            createOrderObject.data.car___series = "";
+            createOrderObject.data.car___specialization = modelData?.vehicle_type || 'undefined';
+            createOrderObject.data.car___state_number = $('#car-make').val() || "undefined";
+            createOrderObject.data.car___unit = $('#unitOfMeasurement').val() || "undefined";
+            createOrderObject.data.car___vin = "undefined";
+            createOrderObject.data.car___year = +($('#car___year').val()) || null;
+
+            const timeNow = new Date();
+            createOrderObject.data.settings___statuses_times = JSON.stringify({
+                "register_at": timeNow.toISOString(),
+                "check_in_at": "",
+                "canceled_at": "",
+                "created_at": timeNow.toISOString()
+            })
+
+            createOrderObject.data.client___name = $('#firstname').val();
+
+            createOrderObject.data.settings___register_at = timeNow.toISOString();
+            createOrderObject.data.general___start_date = timeNow.toISOString();
+
+            // get time in your timeZone
+            const adjustedTime = new Date(timeNow.getTime() + timeZoneObjectData.offset * 1000);
+            // get hours and minutes
+            const hours = String(adjustedTime.getUTCHours()).padStart(2, '0');
+            const minutes = String(adjustedTime.getUTCMinutes()).padStart(2, '0');
+            // "hours:minutes"
+            createOrderObject.data.general___start_time = `${hours}:${minutes}`;
+
+            createOrderObject.data.settings___check_in_at = $('#timeSlot').data('settings___check_in_at');
+            createOrderObject.data.general___check_in_date = $('#timeSlot').data('general___check_in_date');
+            createOrderObject.data.general___check_in_time = $('#timeSlot').data('general___check_in_time');
+
+
+            const createResponse = await createOrder(createOrderObject);
+
+            if (createResponse.status === 'OK') {
+                const timeSlot = $('#timeSlot').val();
+                const appointmentDate = $('.date.selected').text();
+                const monthYearText = $('#month-year').text();
+
+                // Update the page title with the success message
+                $('.page-title').html(`~!Appointment_successfully_booked_for!~ ${appointmentDate} ${monthYearText} ${timeSlot} <img src="../images/successful_icon.svg" alt="successful" class="successful-icon">`);
+
+                $('#modal').fadeOut();
+                $('.main-content').fadeOut();
+            }
+
+        });
+
+
+        // "+" and then only numbers
+        $('#phone').on('input', function () {
+            let value = $(this).val();
+
+            const filteredValue = '+' + value.replace(/[^0-9]/g, '');
+            $(this).val(filteredValue);
+        });
+
+
+        // toggle car parameters
+        $('#toggleCarInfo').on('click', function () {
+            $('#car-subform').slideToggle().css('display', 'flex');
+            $('.toggle-button-icon > img').toggleClass('rotate-icon');
+        });
+
+
+        // Event for choosing brand
+        $('#brand').on('change', async function () {
+            const id = $(this).attr('id');
+
+            const selectObject = {
+                "_type": "model",
+                "brand_name_inscription": $(this).val()
+            };
+
+            // Calling the function to retrieve models, passing the selected brand
+            if (id === 'brand') {
+                await getModels(selectObject);
+            }
+        });
+
+
+        // check required inputs in form
+        $('#firstname, #phone, #brand, #model').on('input change', validateInputs);
+
+
+        // check car___year
+        $('#car___year').on('input', function () {
+            const currentValue = $(this).val();
+            const currentYear = new Date().getFullYear(); // Поточний рік
+
+            if (currentValue.length >= 4) {
+                // Перевіряємо значення лише якщо введено 4 символи і більше
+                const filteredValue = currentValue.replace(/[^0-9]/g, ''); // Залишаємо тільки цифри
+
+                let numericValue = parseInt(filteredValue, 10); // Перетворюємо відфільтроване значення в число
+
+                if (numericValue < 1900) {
+                    numericValue = 1900;
+                } else if (numericValue > 2024) {
+                    numericValue = 2024;
+                } else if (numericValue > currentYear) {
+                    numericValue = currentYear;
+                }
+
+                // Оновлюємо поле, якщо значення відрізняється від введеного
+                if (filteredValue !== numericValue.toString()) {
+                    $(this).val(numericValue);
+                }
+            }
+        });
+
+
+        // we can write only numbers
+        $('#mileage').on('input', function () {
+            const currentValue = $(this).val();
+            const filteredValue = currentValue.replace(/[^0-9]/g, '');
+            $(this).val(filteredValue);
+        });
+
+
+        // rerender page on click company icon and successful icon
+        $(document).on('click', '.header-icon-img, .successful-icon', function () {
+            location.reload();
+        });
+
+    });
+
+</script>
+
+</body>
+</html>

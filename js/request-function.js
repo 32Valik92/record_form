@@ -56,11 +56,11 @@ async function getOrderTemplateData(sto_id) {
 }
 
 // Function for getting Brands array
-async function getBrands(selectObj = { "_type": "brand" }) {
+async function getBrands(selectObj = {"_type": "brand"}) {
     const brandsRequest = getBrandsRequest(selectObj);
 
     try {
-        const { result: brandsResult } = await ajaxRequest(brandsRequest);
+        const {result: brandsResult} = await ajaxRequest(brandsRequest);
 
         if (Array.isArray(brandsResult) && brandsResult.length > 0) {
             // Сортуємо масив так, щоб елементи з російськими або українськими символами були в кінці
@@ -80,7 +80,6 @@ async function getBrands(selectObj = { "_type": "brand" }) {
             $('#brand').empty();
             $('#brand').append('<option value="" disabled selected hidden></option>');
 
-            console.log(sortedBrands);
             const newOptions = sortedBrands.map(brand => {
                 return $("<option></option>")
                     .attr("value", brand.brand_name_inscription)

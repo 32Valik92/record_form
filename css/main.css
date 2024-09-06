@@ -25,17 +25,52 @@ body {
     box-sizing: border-box;
     display: flex;
     padding: 22px 64px 0 64px;
-    gap: 10px;
     height: 140px;
     border-bottom: 1px solid #EDEEF0;
 }
 
 .header-icon {
     width: 50%;
+    display: flex;
+    align-items: center;
 }
 
 .header-icon-img {
+    height: 70%;
+}
+
+.language-div {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 8px;
+    width: 50%;
+
+}
+
+.language-icon {
+    width: 20px;
+}
+
+.language-div .input-container {
+    height: 40px;
+    width: 150px;
+    margin-bottom: 0;
+}
+
+.language-div select {
+    background-color: #c8c8c7;
+    font-family: 'Armstrong', sans-serif;
+    border-radius: 12px;
+    border: 2px solid #323230;
+    box-sizing: border-box;
+    color: #000;
+    font-size: 14px;
     height: 100%;
+    outline: 0;
+    padding: 4px 10px 0;
+    width: 150px;
+    appearance: none;
 }
 
 /* --------------------------end header-------------------------- */
@@ -358,7 +393,7 @@ body {
     top: -20px;
     transform: translateY(0);
     transition: transform 200ms;
-    width: 150px;
+    width: 170px;
 }
 
 #car___year + .cut {
@@ -524,9 +559,16 @@ select {
 /* ----------------- Mobile Styles ----------------- */
 @media (max-width: 768px) {
     .header-page {
-        flex-direction: column;
-        padding: 22px 32px 0 32px;
-        height: auto;
+        padding: 10px 10px;
+        height: 100px;
+        justify-content: space-between;
+    }
+
+    .header-icon {
+        width: 100%;
+        display: flex;
+        justify-content: left;
+        align-items: center;
     }
 
     .page-title {
@@ -588,6 +630,7 @@ select {
         font-size: 24px;
         margin-top: 20px;
     }
+
 
     .input-container:nth-child(2),
     .input-container:nth-child(3),

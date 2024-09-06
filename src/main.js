@@ -1,6 +1,22 @@
 // main function for building a calendar with free time slots
 async function initializeCalendar(config) {
-    const $calendar = $(config.calendarSelector);
+    const $lng = config.lng;
+    let location = '';
+    switch ($lng) {
+        case 'uk':
+            location = 'uk-UA';
+            break;
+        case 'ru':
+            location = 'ru-RU';
+            break;
+        case 'sk':
+            location = 'sk-SK';
+            break;
+        case 'en':
+            location = 'en-US';
+            break;
+    }
+
     const $monthYear = $(config.monthYearSelector);
     const $dates = $(config.datesSelector);
     const $prevButton = $(config.prevButtonSelector);
@@ -12,7 +28,10 @@ async function initializeCalendar(config) {
     // Function to render the calendar
     function renderCalendar() {
         $dates.empty();
-        $monthYear.text(currentDate.toLocaleDateString('en-US', {year: 'numeric', month: 'long'}));
+
+        let formattedDate = currentDate.toLocaleDateString(`${location}`, {year: 'numeric', month: 'long'});
+        const parts = formattedDate.split(' ');
+        $monthYear.text(`${parts[0]} ${parts[1]}`);
 
         const firstDayIndex = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
         const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
@@ -155,7 +174,7 @@ function createNoSlotsModal() {
             .attr('id', 'modalOverlay');
 
         // Create the modal box
-        const $modalNoSlots = $('<div>No available slots</div>')
+        const $modalNoSlots = $('<div>~!No_available_slots!~</div>')
             .attr('id', 'modalNoSlots');
         // Append modal and overlay to body
         $('body').append($overlay);

@@ -8,7 +8,7 @@
     <!-- select 2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
 
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="../css/main.css">
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script> <!-- JQuery -->
@@ -20,9 +20,21 @@
 
 <div class="main-body">
     <div class="header-page">
-        <div class="header-icon"><img src="images/009_Group_LOGO_gor_new.svg" alt="service icon"
-                                      class="header-icon-img"></div>
-        <div class="header-consultation"></div>
+        <div class="header-icon">
+            <img src="../images/009_Group_LOGO_gor_new.png" alt="service icon" class="header-icon-img">
+        </div>
+        <div class="language-div">
+            <img src="../images/lng.svg" alt="language"
+                 class="language-icon">
+            <div class="input-container">
+                <select id="language" class="input lng-select" name="language">
+                    <option value="uk">Українська</option>
+                    <option value="ru">Русский</option>
+                    <option value="sk">Slovenčina</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+        </div>
     </div>
 
     <div class="page-title">Welcome<br>Please select an appointment date and time</div>
@@ -56,7 +68,7 @@
                     <div class="input-container ic2">
                         <input id="firstname" class="input" type="text" placeholder=" "/>
                         <div class="cut"></div>
-                        <label for="firstname" class="placeholder">First name *</label>
+                        <label for="firstname" class="placeholder">Name *</label>
                     </div>
                     <div class="input-container ic2">
                         <input id="phone" class="input" type="text" name="phone" placeholder="" value="+421">
@@ -90,7 +102,7 @@
 
                     <div class="toggle-button" id="toggleCarInfo">
                         <div class="toggle-button-header">Show Additional Parameters</div>
-                        <div class="toggle-button-icon"><img src="./images/Arrow_Bottom.svg" alt="Arrow_Bottom"></div>
+                        <div class="toggle-button-icon"><img src="../images/Arrow_Bottom.svg" alt="Arrow_Bottom"></div>
                     </div>
 
                     <div class="subform hidden" id="car-subform">
@@ -113,7 +125,7 @@
                         <div class="input-container ic2">
                             <input id="car___year" class="input" type="text" name="car___year" placeholder=" ">
                             <div class="cut"></div>
-                            <label for="car___year" class="placeholder">Car year</label>
+                            <label for="car___year" class="placeholder">Year</label>
                         </div>
                         <div class="input-container ic2">
                             <input id="Comments" class="input" type="text" name="Comments" placeholder=" ">
@@ -138,22 +150,39 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
-<script src="js/error-handling/errors.js"></script> <!-- error handling -->
+<script src="../js/error-handling/errors.js"></script> <!-- error handling -->
 
-<script src="js/configs/configs.js"></script> <!-- Get All values and URLs  -->
+<script src="../js/configs/configs.js"></script> <!-- Get All values and URLs  -->
 
-<script src="js/make-request.js"></script> <!-- function for build Request -->
+<script src="../js/make-request.js"></script> <!-- function for build Request -->
 
-<script src="js/request-function.js"></script> <!-- function for send Request -->
+<script src="../js/request-function.js"></script> <!-- function for send Request -->
 
-<script src="js/request-template.js"></script> <!-- Request function -->
+<script src="../js/request-template.js"></script> <!-- Request function -->
 
-<script src="js/main.js"></script> <!-- work code -->
+<script src="main.js"></script> <!-- work code -->
 <!-- /////////////////////////////////////////////////////////////////////////////////////////////// -->
 
 
 <script>
     $(document).ready(async function () {
+
+        // select our language at first render
+        const url = window.location.href;
+        const lastSlashIndex = url.lastIndexOf('/');
+        const languageCode = url.substring(lastSlashIndex - 2, lastSlashIndex);
+        $('#language').val(languageCode);
+
+        // event on change language and jump to new page lng
+        $('#language').change(function () {
+            const oldValue = window.location.href.split('/').slice(-2, -1)[0]; // prev value in URL
+            const newValue = $(this).val();
+            const url = window.location.href;
+            const newUrl = url.replace(`/${oldValue}/`, `/${newValue}/`);
+
+            // Перенаправлення на нову URL
+            window.location.href = newUrl;
+        });
 
         // get TimeZoneId for get offset from sto_id timeZone
         const TimeZoneId = await getTimeZoneId(requestConst.sto_id);
@@ -164,7 +193,7 @@
 
         // initializeCalendar
         await initializeCalendar({
-            calendarSelector: '#calendar',
+            lng: $('#language').val(),
             monthYearSelector: '#month-year',
             datesSelector: '#dates',
             prevButtonSelector: '#prev',
@@ -189,7 +218,7 @@
 
         // init our select like select2
         $('#brand, #model, #unitOfMeasurement').select2({
-            placeholder: "Select an option",
+            placeholder: "Select",
         });
 
 
@@ -283,7 +312,7 @@
                 const monthYearText = $('#month-year').text();
 
                 // Update the page title with the success message
-                $('.page-title').html(`Appointment successfully booked for ${appointmentDate} ${monthYearText} at ${timeSlot} <img src="images/successful_icon.svg" alt="successful" class="successful-icon">`);
+                $('.page-title').html(`Appointment successfully booked for ${appointmentDate} ${monthYearText} ${timeSlot} <img src="../images/successful_icon.svg" alt="successful" class="successful-icon">`);
 
                 $('#modal').fadeOut();
                 $('.main-content').fadeOut();
